@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiLoginSample.Views.CreateAccountPage" x:DataType="viewmodel:CreateAccountViewModel"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:MauiLoginSample.Helpers"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:model="clr-namespace:MauiLoginSample.Models"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:viewmodel="clr-namespace:MauiLoginSample.ViewModels"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="{StaticResource PrimaryDarkText}" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="Margin" Value="0,0,0,16" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="{StaticResource SecondaryDark}" />
+            </Style>
+            <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="IndianRed" />
+            </Style>
+
+            <Style x:Key="ValidEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="Green" />
+            </Style>
+
+            <Style x:Key="ErrorMessage" TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
+                <Setter Property="Margin" Value="3" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <Grid ColumnDefinitions="*" RowDefinitions="Auto,Auto,*">
+
+            <Image Grid.Row="0" Aspect="AspectFit" HeightRequest="150" Source="banner_bg.jpg" />
+
+            <BoxView Grid.Row="0"
+                     BackgroundColor="{StaticResource Primary}"
+                     HeightRequest="150" HorizontalOptions="Fill" Opacity="0.7"
+                     VerticalOptions="Fill" />
+
+            <Border Grid.Row="1" Margin="0,-50,0,0"
+                    BackgroundColor="{StaticResource Gray100}"
+                    HorizontalOptions="Center" StrokeShape="RoundRectangle 80" StrokeThickness="6"
+                    VerticalOptions="Center">
+
+                <Image Aspect="AspectFit" HeightRequest="100" HorizontalOptions="Center"
+                       Source="ic_menu_invite.png" VerticalOptions="Center" WidthRequest="100" />
+
+                <Border.Stroke>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Offset="0.1" Color="{StaticResource Primary}" />
+                        <GradientStop Offset="1.0" Color="{StaticResource Secondary}" />
+                    </LinearGradientBrush>
+                </Border.Stroke>
+            </Border>
+
+            <VerticalStackLayout Grid.Row="2" Padding="10">
+
+                <Label Text="First Name" />
+                <Entry Text="{Binding AddNewModel.FirstName}">
+                    <Entry.Behaviors>
+                        <mct:CharactersValidationBehavior CharacterType="Any" InvalidStyle="{StaticResource InvalidEntryStyle}" RegexOptions="IgnoreCase" RegexPattern="^[^!@#$%^]*$" />
+                    </Entry.Behaviors>
+
+                </Entry>
+
+                <Label Text="Last Name" />
+                <Entry Text="{Binding AddNewModel.LastName}">
+                    <Entry.Behaviors>
+                        <mct:CharactersValidationBehavior CharacterType="Any" InvalidStyle="{StaticResource InvalidEntryStyle}" RegexOptions="IgnoreCase" RegexPattern="^[^!@#$%^]*$" />
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Text="User Name" />
+                <Entry Text="{Binding AddNewModel.UserName}" />
+
+                <Label Text="Password" />
+                <Entry IsPassword="True" Text="{Binding AddNewModel.Password}">
+
+                    <Entry.Behaviors>
+                        <mct:MultiValidationBehavior x:Name="MyPaswordValidator" Flags="ValidateOnValueChanged" InvalidStyle="{StaticResource InvalidEntryStyle}" ValidStyle="{StaticResource ValidEntryStyle}">
+
+                            <mct:CharactersValidationBehavior x:Name="DigitValidation" mct:MultiValidationBehavior.Error="1 digit" CharacterType="Digit"
+                                                              MinimumCharacterTypeCount="1" RegexPattern="" />
+
+                            <mct:CharactersValidationBehavior x:Name="UpperValidation" mct:MultiValidationBehavior.Error="1 upper case"
+                                                              CharacterType="UppercaseLetter" MinimumCharacterTypeCount="1" RegexPattern="" />
+
+                            <mct:CharactersValidationBehavior x:Name="LowerValidation" mct:MultiValidationBehavior.Error="1 upper case"
+                                                              CharacterType="LowercaseLetter" MinimumCharacterTypeCount="1" RegexPattern="" />
+
+                            <mct:CharactersValidationBehavior x:Name="SymbolValidation" mct:MultiValidationBehavior.Error="1 symbol"
+                                                              CharacterType="NonAlphanumericSymbol" MinimumCharacterTypeCount="1" RegexPattern="" />
+
+                            <mct:CharactersValidationBehavior x:Name="AnyValidation" mct:MultiValidationBehavior.Error="8 characters" CharacterType="Any"
+                                                              MaximumCharacterTypeCount="15" MinimumCharacterTypeCount="8" RegexPattern="" />
+
+                            <!--<mct:CharactersValidationBehavior x:Name="OTDPasswordValidation" CharacterType="Any" RegexPattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,!@#$%^+=_])(?!.*(.)\1).{8,20}$" />-->
+
+                            <mct:CharactersValidationBehavior x:Name="OTDRepeatValidation" CharacterType="Any" RegexOptions="IgnoreCase" RegexPattern="^(?!\S*(\S)\1\1)(?!\S*(\S{5})\S*\2)\S*$" />
+                        </mct:MultiValidationBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Text="{Binding Value, Source={x:Reference MyPaswordValidator}, StringFormat='Password --> {0}'}" Margin="0,0,0,10" TextColor="{StaticResource Black}" />
+
+
+                <!--<Label IsVisible="{Binding IsNotValid, Source={x:Reference OTDPasswordValidation}}" Style="{StaticResource ErrorMessage}" Text="Password is not according to Policy" />-->
+
+                <Label IsVisible="{Binding IsNotValid, Source={x:Reference DigitValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 digit required" />
+                <Label IsVisible="{Binding IsNotValid, Source={x:Reference UpperValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 upper case required" />
+                <Label IsVisible="{Binding IsNotValid, Source={x:Reference LowerValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 lower case required" />
+                <Label IsVisible="{Binding IsNotValid, Source={x:Reference SymbolValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 symbol (!@#$%^ for e.g.) required" />
+                <Label IsVisible="{Binding IsNotValid, Source={x:Reference AnyValidation}}" Style="{StaticResource ErrorMessage}" Text="Password must be between 8 to 15 chars" />
+                <Label IsVisible="{Binding IsNotValid, Source={x:Reference OTDRepeatValidation}}" Style="{StaticResource ErrorMessage}" Text="You seem to be repeating word" />
+
+                <Label Text="Phone Number" />
+                <Entry Text="{Binding AddNewModel.PhoneNumber}">
+                    <Entry.Behaviors>
+                        <mct:MaskedBehavior Mask="(XXX)-XXX-XXXX" />
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Text="Start Date" />
+                <DatePicker Date="{Binding AddNewModel.ServiceStartDate}" MaximumDate="{Binding MaxDate}" MinimumDate="{Binding TodaysDate}" />
+
+                <Label Text="{Binding FormValues}" />
+
+                <!--  IsEnabled="{Binding ShouldCreateAccountButtonBeEnabled}"  -->
+
+                <Button Command="{Binding CreateAccountCommand}" HorizontalOptions="Center" Text="Create Account" WidthRequest="200" />
+
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+
+
+
+</ContentPage>
