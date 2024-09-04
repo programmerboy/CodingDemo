@@ -18,6 +18,28 @@
                 <Setter Property="HeightRequest" Value="40" />
                 <Setter Property="CornerRadius" Value="20" />
             </Style>
+
+            <LinearGradientBrush x:Key="borderYellow" StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Offset="0.1" Color="Green" />
+                <GradientStop Offset="1.0" Color="LimeGreen" />
+            </LinearGradientBrush>
+
+            <Style x:Key="yellowBorderFrame" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource SecondaryLight}" />
+                <Setter Property="Stroke" Value="{StaticResource borderYellow}" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 5,5,5,5" />
+                <Setter Property="StrokeThickness" Value="3" />
+                <Setter Property="Padding" Value="5,5" />
+            </Style>
+
+
+            <Style x:Key="alertWarning" BasedOn="{StaticResource yellowBorderFrame}" TargetType="Border">
+                <Setter Property="Stroke" Value="Red" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="Background" Value="#FFEBEE" />
+            </Style>
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

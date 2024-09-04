@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiLoginSample.Views.NewUserCreatedPage" x:DataType="viewmodel:NewUserCreatedViewModel"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:MauiLoginSample.Helpers"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:model="clr-namespace:MauiLoginSample.Models"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:viewmodel="clr-namespace:MauiLoginSample.ViewModels"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,Auto,*">
+
+            <Image Grid.Row="0" Aspect="AspectFit" HeightRequest="150" Source="banner_bg.jpg" />
+
+            <BoxView Grid.Row="0"
+                     BackgroundColor="{StaticResource Primary}"
+                     HeightRequest="150" HorizontalOptions="Fill" Opacity="0.7"
+                     VerticalOptions="Fill" />
+
+            <Border Grid.Row="1" Margin="0,-50,0,0"
+                    BackgroundColor="{StaticResource Gray100}"
+                    HorizontalOptions="Center" StrokeShape="RoundRectangle 80" StrokeThickness="6"
+                    VerticalOptions="Center">
+
+                <Image Aspect="AspectFit"
+                       BackgroundColor="{StaticResource Secondary}"
+                       HeightRequest="100" HorizontalOptions="Center" Source="ic_cab_done_holo_light.png"
+                       VerticalOptions="Center" WidthRequest="100" />
+
+                <Border.Stroke>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Offset="0.1" Color="{StaticResource Primary}" />
+                        <GradientStop Offset="1.0" Color="Yellow" />
+                    </LinearGradientBrush>
+                </Border.Stroke>
+            </Border>
+
+            <VerticalStackLayout Grid.Row="3" Padding="10" HorizontalOptions="Center" Spacing="10">
+
+                <Label FontSize="20" Text="Account Successfully Created" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
+
+                <Button Margin="8"
+                        Command="{Binding GoToSignInPageCommand}"
+                        HorizontalOptions="Center"
+                        Text="Login Now?" WidthRequest="200" />
+
+
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

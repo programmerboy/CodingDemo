@@ -1,12 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiLoginSample.Helpers;
-using MauiLoginSample.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MauiLoginSample.Services;
 
 namespace MauiLoginSample.ViewModels
 {
@@ -20,6 +15,7 @@ namespace MauiLoginSample.ViewModels
 
         [ObservableProperty]
         private bool isSignInButtonEnabled;
+        private IDataService service;
 
         partial void OnPasswordChanged(string? oldValue, string newValue)
         {
@@ -31,22 +27,32 @@ namespace MauiLoginSample.ViewModels
             IsSignInButtonEnabled = UserName.HasValue() && Password.HasValue();
         }
 
-        public MainViewModel()
+        public MainViewModel(IDataService service)
         {
             Title = "Login Demo";
+            this.service = service;
         }
 
         [RelayCommand]
         public async Task SignIn()
         {
+            var user = await service.GetUser(UserName, Password);
 
+            if (user is null)
+            {
+                await MyUtilities.ShowToastAsync($"Login unsuccessful for \"{UserName}\"");
+            }
+            else
+            {
+                await MyUtilities.ShowToastAsync($"Sign in successfull for \"{UserName}\". Welcome, {user.FirstName}!!");
+            }
         }
 
 
         [RelayCommand]
         public async Task CreateNew()
         {
-            await MyUtilities.NavigateTo(new CreateAccountPage());
+            await MyUtilities.NavigateToShell(AppConstants.ROUTE_NEW_USER);
         }
     }
 }

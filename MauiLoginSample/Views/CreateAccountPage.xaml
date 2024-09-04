@@ -30,10 +30,12 @@
             </Style>
 
             <Style x:Key="ErrorMessage" TargetType="Label">
-                <Setter Property="TextColor" Value="Red" />
+                <Setter Property="TextColor" Value="DeepPink" />
                 <Setter Property="Margin" Value="3" />
                 <Setter Property="FontSize" Value="12" />
             </Style>
+
+            <mct:VariableMultiValueConverter x:Key="AllTrueConverter" ConditionType="All" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -68,7 +70,9 @@
                 <Label Text="First Name" />
                 <Entry Text="{Binding AddNewModel.FirstName}">
                     <Entry.Behaviors>
-                        <mct:CharactersValidationBehavior CharacterType="Any" InvalidStyle="{StaticResource InvalidEntryStyle}" RegexOptions="IgnoreCase" RegexPattern="^[^!@#$%^]*$" />
+                        <mct:CharactersValidationBehavior x:Name="vld8rFName" CharacterType="Any" Flags="ValidateOnValueChanged,ValidateOnAttaching"
+                                                          InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                                          MinimumLength="1" RegexOptions="IgnoreCase" RegexPattern="^[^!@#$%^]{1,}$" />
                     </Entry.Behaviors>
 
                 </Entry>
@@ -76,18 +80,26 @@
                 <Label Text="Last Name" />
                 <Entry Text="{Binding AddNewModel.LastName}">
                     <Entry.Behaviors>
-                        <mct:CharactersValidationBehavior CharacterType="Any" InvalidStyle="{StaticResource InvalidEntryStyle}" RegexOptions="IgnoreCase" RegexPattern="^[^!@#$%^]*$" />
+                        <mct:CharactersValidationBehavior x:Name="vld8rLName" CharacterType="Any" Flags="ValidateOnValueChanged,ValidateOnAttaching"
+                                                          InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                                          MinimumLength="1" RegexOptions="IgnoreCase" RegexPattern="^[^!@#$%^]{1,}$" />
                     </Entry.Behaviors>
                 </Entry>
 
                 <Label Text="User Name" />
-                <Entry Text="{Binding AddNewModel.UserName}" />
+                <Entry Text="{Binding AddNewModel.UserName}">
+                    <Entry.Behaviors>
+                        <mct:CharactersValidationBehavior x:Name="vld8rUName" CharacterType="Any" Flags="ValidateOnValueChanged,ValidateOnAttaching"
+                                                          InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                                          MinimumLength="1" RegexOptions="IgnoreCase" RegexPattern="^[^!@#$%^]{1,}$" />
+                    </Entry.Behaviors>
+                </Entry>
 
                 <Label Text="Password" />
                 <Entry IsPassword="True" Text="{Binding AddNewModel.Password}">
 
                     <Entry.Behaviors>
-                        <mct:MultiValidationBehavior x:Name="MyPaswordValidator" Flags="ValidateOnValueChanged" InvalidStyle="{StaticResource InvalidEntryStyle}" ValidStyle="{StaticResource ValidEntryStyle}">
+                        <mct:MultiValidationBehavior x:Name="vld8rPassword" Flags="ValidateOnValueChanged" InvalidStyle="{StaticResource InvalidEntryStyle}" ValidStyle="{StaticResource ValidEntryStyle}">
 
                             <mct:CharactersValidationBehavior x:Name="DigitValidation" mct:MultiValidationBehavior.Error="1 digit" CharacterType="Digit"
                                                               MinimumCharacterTypeCount="1" RegexPattern="" />
@@ -106,27 +118,36 @@
 
                             <!--<mct:CharactersValidationBehavior x:Name="OTDPasswordValidation" CharacterType="Any" RegexPattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,!@#$%^+=_])(?!.*(.)\1).{8,20}$" />-->
 
-                            <mct:CharactersValidationBehavior x:Name="OTDRepeatValidation" CharacterType="Any" RegexOptions="IgnoreCase" RegexPattern="^(?!\S*(\S)\1\1)(?!\S*(\S{5})\S*\2)\S*$" />
+                            <mct:CharactersValidationBehavior x:Name="OTDRepeatValidation" CharacterType="Any" Flags="ValidateOnValueChanged"
+                                                              RegexOptions="IgnoreCase" RegexPattern="^(?!\S*(\S)\1\1)(?!\S*(\S{5})\S*\2)\S*$" />
                         </mct:MultiValidationBehavior>
                     </Entry.Behaviors>
                 </Entry>
 
-                <Label Text="{Binding Value, Source={x:Reference MyPaswordValidator}, StringFormat='Password --> {0}'}" Margin="0,0,0,10" TextColor="{StaticResource Black}" />
+                <Label Margin="0,0,0,10" Text="{Binding Value, Source={x:Reference vld8rPassword}, StringFormat='Password --> {0}'}" TextColor="{StaticResource Black}" />
 
 
                 <!--<Label IsVisible="{Binding IsNotValid, Source={x:Reference OTDPasswordValidation}}" Style="{StaticResource ErrorMessage}" Text="Password is not according to Policy" />-->
 
-                <Label IsVisible="{Binding IsNotValid, Source={x:Reference DigitValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 digit required" />
-                <Label IsVisible="{Binding IsNotValid, Source={x:Reference UpperValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 upper case required" />
-                <Label IsVisible="{Binding IsNotValid, Source={x:Reference LowerValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 lower case required" />
-                <Label IsVisible="{Binding IsNotValid, Source={x:Reference SymbolValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 symbol (!@#$%^ for e.g.) required" />
-                <Label IsVisible="{Binding IsNotValid, Source={x:Reference AnyValidation}}" Style="{StaticResource ErrorMessage}" Text="Password must be between 8 to 15 chars" />
-                <Label IsVisible="{Binding IsNotValid, Source={x:Reference OTDRepeatValidation}}" Style="{StaticResource ErrorMessage}" Text="You seem to be repeating word" />
+                <Border Margin="0,10,0,0" Style="{StaticResource yellowBorderFrame}" IsVisible="{Binding IsNotValid, Source={x:Reference vld8rPassword}}">
+                    <VerticalStackLayout>
+                        <Label IsVisible="{Binding IsNotValid, Source={x:Reference DigitValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 digit required" />
+                        <Label IsVisible="{Binding IsNotValid, Source={x:Reference UpperValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 upper case required" />
+                        <Label IsVisible="{Binding IsNotValid, Source={x:Reference LowerValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 lower case required" />
+                        <Label IsVisible="{Binding IsNotValid, Source={x:Reference SymbolValidation}}" Style="{StaticResource ErrorMessage}" Text="At least 1 symbol (!@#$%^ for e.g.) required" />
+                        <Label IsVisible="{Binding IsNotValid, Source={x:Reference AnyValidation}}" Style="{StaticResource ErrorMessage}" Text="Password must be between 8 to 15 chars" />
+                        <Label IsVisible="{Binding IsNotValid, Source={x:Reference OTDRepeatValidation}}" Style="{StaticResource ErrorMessage}" Text="You seem to be repeating word" />
+                    </VerticalStackLayout>
+                </Border>
 
                 <Label Text="Phone Number" />
                 <Entry Text="{Binding AddNewModel.PhoneNumber}">
                     <Entry.Behaviors>
                         <mct:MaskedBehavior Mask="(XXX)-XXX-XXXX" />
+                        <mct:TextValidationBehavior x:Name="vld8rNumber" DecorationFlags="Trim" Flags="ValidateOnValueChanged,ValidateOnAttaching"
+                                                    InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                                    RegexPattern="^[0-9\(\)\-]+$"
+                                                    ValidStyle="{StaticResource ValidEntryStyle}" />
                     </Entry.Behaviors>
                 </Entry>
 
@@ -137,13 +158,21 @@
 
                 <!--  IsEnabled="{Binding ShouldCreateAccountButtonBeEnabled}"  -->
 
-                <Button Command="{Binding CreateAccountCommand}" HorizontalOptions="Center" Text="Create Account" WidthRequest="200" />
+                <Button Command="{Binding CreateAccountCommand}" HorizontalOptions="Center" Text="Create Account" WidthRequest="200">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                            <Binding Path="IsValid" Source="{x:Reference vld8rFName}" />
+                            <Binding Path="IsValid" Source="{x:Reference vld8rLName}" />
+                            <Binding Path="IsValid" Source="{x:Reference vld8rUName}" />
+                            <Binding Path="IsValid" Source="{x:Reference vld8rPassword}" />
+                            <Binding Path="IsValid" Source="{x:Reference vld8rNumber}" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
 
             </VerticalStackLayout>
 
         </Grid>
     </ScrollView>
-
-
 
 </ContentPage>

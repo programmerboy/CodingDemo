@@ -51,6 +51,8 @@ namespace MauiLoginSample
 
             //services.AddSingleton<MainPage, MainViewModel>();
             services.AddTransient<MainPage, MainViewModel>();
+            services.AddTransient<CreateAccountPage, CreateAccountViewModel>();
+            services.AddTransient<NewUserCreatedPage, NewUserCreatedViewModel>();
 
             /*services.AddTransient<NearYouPage, ListItemViewModel>();
             services.AddTransient<HelpPage, HelpViewModel>();*/

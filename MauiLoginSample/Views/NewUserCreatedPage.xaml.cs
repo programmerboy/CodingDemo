@@ -2,11 +2,11 @@ using MauiLoginSample.ViewModels;
 
 namespace MauiLoginSample.Views;
 
-public partial class CreateAccountPage : ContentPage
+public partial class NewUserCreatedPage : ContentPage
 {
-    private CreateAccountViewModel _viewmodel;
+    private NewUserCreatedViewModel _viewmodel;
 
-    public CreateAccountPage(CreateAccountViewModel viewModel)
+    public NewUserCreatedPage(NewUserCreatedViewModel viewModel)
     {
         InitializeComponent();
         _viewmodel = viewModel;

@@ -1,12 +1,4 @@
-﻿using Newtonsoft.Json.Converters;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Newtonsoft.Json;
 using MauiLoginSample.Helpers;
 
 namespace MauiLoginSample.Models

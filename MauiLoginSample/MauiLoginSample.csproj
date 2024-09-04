@@ -59,6 +59,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\Font Awesome 6 Brands-Regular-400.otf" />
 	  <None Remove="Resources\Fonts\typicons.ttf" />
+	  <None Remove="Resources\Images\ic_cab_done_holo_light.png" />
 	  <None Remove="Resources\Images\ic_menu_invite.png" />
 	</ItemGroup>
 
@@ -86,6 +87,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\CreateAccountPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\NewUserCreatedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

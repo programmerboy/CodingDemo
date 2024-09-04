@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 namespace MauiLoginSample.Helpers
 {
@@ -35,6 +32,15 @@ namespace MauiLoginSample.Helpers
         public static async Task GoBackShell()
         {
             await Shell.Current.GoToAsync("..");
+        }
+
+        public static async Task ShowToastAsync(string text)
+        {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            ToastDuration duration = ToastDuration.Short;
+            double fontSize = 14;
+            var toast = Toast.Make(text, duration, fontSize);
+            await toast.Show(cancellationTokenSource.Token);
         }
 
     }
