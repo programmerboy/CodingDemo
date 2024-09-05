@@ -23,7 +23,7 @@ namespace MauiLoginSample.Services
         private const string API_URL = "api.google.com";
 
         private HttpClient _client;
-        public HttpClient Client
+        private HttpClient Client
         {
             get
             {
