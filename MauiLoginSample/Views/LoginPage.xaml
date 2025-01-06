@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiLoginSample.Views.LoginPage" xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:MauiLoginSample.Helpers" Title="LoginPage">
+
+    <ContentPage.Resources>
+        <Style TargetType="Entry">
+            <Setter Property="MinimumWidthRequest" Value="300" />
+            <Setter Property="MinimumHeightRequest" Value="50" />
+            <Setter Property="HorizontalOptions" Value="Fill" />
+            <Setter Property="VerticalOptions" Value="Fill" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+
+        <Style TargetType="Border">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Stroke" Value="{StaticResource PrimaryDark}" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 25" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="Padding" Value="0,5" />
+            <Setter Property="Margin" Value="0,15" />
+        </Style>
+
+        <Style x:Key="borderGlyph" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PrimaryLight}" />
+            <Setter Property="Stroke" Value="{StaticResource Gray100}" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 50" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="MinimumWidthRequest" Value="40" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout HorizontalOptions="CenterAndExpand">
+        <Border>
+            <StackLayout Orientation="Horizontal">
+                <Border Style="{StaticResource borderGlyph}">
+                    <Image HorizontalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource FontFamily="OTDTypicons" Glyph="{x:Static helpers:OTDTypicons.User}" Color="{StaticResource SecondaryLight}" />
+                        </Image.Source>
+                    </Image>
+                </Border>
+                <Entry Placeholder="User Name" Text="{Binding Username}" />
+            </StackLayout>
+        </Border>
+
+        <Border>
+            <StackLayout Orientation="Horizontal">
+                <Border Style="{StaticResource borderGlyph}">
+                    <Image HorizontalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource FontFamily="OTDTypicons" Glyph="{x:Static helpers:OTDTypicons.Eye}" Color="{StaticResource SecondaryLight}" />
+                        </Image.Source>
+                    </Image>
+                </Border>
+                <Entry Placeholder="Password" Text="{Binding Password}" />
+            </StackLayout>
+        </Border>
+
+        <Button Margin="0,8" BackgroundColor="White" HorizontalOptions="Center"
+                Style="{StaticResource ButtonOutline}"
+                Text="Login"
+                TextColor="{StaticResource Gray600}" />
+    </VerticalStackLayout>
+</ContentPage>

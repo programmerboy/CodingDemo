@@ -14,5 +14,4 @@ namespace MauiLoginSample.Views
             BindingContext = _viewmodel;
         }
     }
-
 }

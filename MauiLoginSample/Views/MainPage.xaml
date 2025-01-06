@@ -3,16 +3,30 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:MauiLoginSample.Helpers"
+             xmlns:local="clr-namespace:MauiLoginSample.MarkupExtensions"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:model="clr-namespace:MauiLoginSample.Models"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
              xmlns:viewmodel="clr-namespace:MauiLoginSample.ViewModels"
              Title="{Binding Title}">
 
-    <ScrollView>
-        <Grid RowDefinitions="Auto,Auto,Auto,*">
+    <ContentPage.Resources>
+        <Style x:Key="rectBox" TargetType="BoxView">
+            <Setter Property="WidthRequest" Value="80" />
+            <Setter Property="HeightRequest" Value="80" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
 
-            <Image Grid.Row="0" Aspect="AspectFit" HeightRequest="150" Source="banner_bg.jpg" />
+    <ScrollView>
+        <Grid x:Name="parentGrid" RowDefinitions="Auto,Auto,Auto,*">
+
+            <Image x:Name="topImage" Grid.Row="0" Aspect="AspectFit"
+                   HeightRequest="150" Source="banner_bg.jpg" />
+
+            <!--<Label Grid.Row="0" Text="{Binding Source={Reference parentGrid}, Path=Width, StringFormat='Width of Parent Grid: {0}'}" />
+            <Label Grid.Row="1" Text="{Binding Source={RelativeSource AncestorType={x:Type Grid}, AncestorLevel=0}, Path=Width, StringFormat='Self Width of Parent Grid: {0}'}" />-->
 
             <BoxView Grid.Row="0"
                      BackgroundColor="{StaticResource Primary}"
@@ -37,25 +51,38 @@
 
             <VerticalStackLayout Grid.Row="3" Padding="10" HorizontalOptions="Center" Spacing="10">
 
+                <Grid BackgroundColor="AntiqueWhite" ColumnDefinitions="Auto,*" ColumnSpacing="10" HorizontalOptions="FillAndExpand">
+                    <Label FontAttributes="Bold" Text="Hue:" VerticalOptions="Center" />
+                    <Slider x:Name="slider" Grid.Column="1" HorizontalOptions="FillAndExpand"
+                            Maximum="1" Minimum="0" />
+                </Grid>
+
                 <Label Text="User Name" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
 
-                <Entry Keyboard="Default" MaxLength="20" Placeholder="Enter your user name"
+                <Entry x:Name="userName" Keyboard="Default" MaxLength="20"
+                       Placeholder="Enter your user name"
                        Text="{Binding UserName}"
                        VerticalOptions="FillAndExpand" />
 
                 <Label Text="Password" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
 
-                <Entry IsPassword="True" Keyboard="Default" MaxLength="20"
-                       Placeholder="Enter your password"
+                <Entry x:Name="userPassword" IsPassword="True" Keyboard="Default"
+                       MaxLength="20" Placeholder="Enter your password"
                        Text="{Binding Password}"
                        VerticalOptions="FillAndExpand" />
 
-                <!--  Add this  -->
                 <Button Margin="8"
                         Command="{Binding SignInCommand}"
                         HorizontalOptions="Center"
-                        IsEnabled="{Binding IsSignInButtonEnabled}"
-                        Text="Sign In" WidthRequest="200" />
+                        IsEnabled="{Binding EnableSignInButton}"
+                        Text="Sign In" WidthRequest="200">
+                    <!--<Button.IsEnabled>
+                        <MultiBinding Converter="{mct:VariableMultiValueConverter ConditionType=All}">
+                            <Binding Converter="{mct:IntToBoolConverter}" Path="Text.Length" Source="{x:Reference userName}" />
+                            <Binding Converter="{mct:IntToBoolConverter}" Path="Text.Length" Source="{x:Reference userPassword}" />
+                        </MultiBinding>
+                    </Button.IsEnabled>-->
+                </Button>
 
                 <Button Margin="8" BackgroundColor="White"
                         Command="{Binding CreateNewCommand}"
@@ -64,10 +91,18 @@
                         Text="New User? Create Account"
                         TextColor="{StaticResource Gray600}" />
 
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <BoxView Style="{StaticResource rectBox}">
+                        <BoxView.Color>
+                            <local:HslColorExtensionSingle A="1" H="{Binding Source={x:Reference slider}, Path=Value}" L="0.5" S="1" />
+                        </BoxView.Color>
+                    </BoxView>
+
+                    <BoxView Style="{StaticResource rectBox}" Color="{local:HslColorExtensionSingle S='0.5', A='1', H={Binding Source={x:Reference slider}, Path=Value}, L='0.5'}" />
+                </HorizontalStackLayout>
+
             </VerticalStackLayout>
         </Grid>
     </ScrollView>
-
-
 
 </ContentPage>

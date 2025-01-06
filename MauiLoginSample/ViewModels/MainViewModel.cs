@@ -8,24 +8,19 @@ namespace MauiLoginSample.ViewModels
     public partial class MainViewModel : MyBaseViewModel
     {
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(EnableSignInButton))]
         private string userName;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(EnableSignInButton))]
         private string password;
 
-        [ObservableProperty]
-        private bool isSignInButtonEnabled;
         private IDataService service;
 
-        partial void OnPasswordChanged(string? oldValue, string newValue)
-        {
-            IsSignInButtonEnabled = UserName.HasValue() && Password.HasValue();
-        }
+        public bool EnableSignInButton => UserName.HasValue() && Password.HasValue();
 
         partial void OnUserNameChanged(string? oldValue, string newValue)
-        {
-            IsSignInButtonEnabled = UserName.HasValue() && Password.HasValue();
-        }
+        { }
 
         public MainViewModel(IDataService service)
         {
